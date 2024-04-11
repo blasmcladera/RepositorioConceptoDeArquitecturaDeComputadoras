@@ -1,0 +1,153 @@
+5.a)
+org 1000h
+cant db ?
+inicio db ?
+
+org 3000h
+leer_str_n:
+;direc bx,cant char al
+push cx
+push ax
+push bx
+mov ch,0
+loop:
+int 6
+;sumo si es vocal
+push bx
+mov bl,byte ptr[bx]
+call es_vocal
+cmp bl,0ffh
+jnz no_es
+inc ch
+no_es:
+pop bx
+inc bx
+dec al
+jnz loop
+pop bx
+pop ax
+int 7
+push ax
+mov al,1
+add ch,'0'
+mov cl,byte ptr[bx]
+mov byte ptr[bx],ch
+int 7
+mov byte ptr[bx],cl
+pop ax
+pop cx
+ret
+
+es_vocal:
+cmp bl,'a'
+jz es
+cmp bl,'A'
+jz es
+cmp bl,'e'
+jz es
+cmp bl,'E'
+jz es
+cmp bl,'i'
+jz es
+cmp bl,'I'
+jz es
+cmp bl,'o'
+jz es
+cmp bl,'O'
+jz es
+cmp bl,'u'
+jz es
+cmp bl,'U'
+jz es
+mov bl,00h
+jmp fin
+es:
+mov bl,0ffh
+fin:
+ret
+
+org 2000h
+mov bx, offset cant
+int 6
+mov al,[bx]
+sub al,30h
+mov bx, offset inicio
+call leer_str_n
+int 7
+hlt
+end
+
+5.b)
+org 1000h
+inicio db ?
+
+org 3000h
+leer_str_char:
+push cx
+push ax
+push bx
+mov ch,0
+mov al,0
+loop:
+int 6
+;sumo si es vocal
+push bx
+mov bl,byte ptr[bx]
+call es_vocal
+cmp bl,0ffh
+jnz no_es
+inc ch
+no_es:
+pop bx
+inc al
+cmp byte ptr[bx],ah
+pushf
+inc bx
+popf
+jnz loop
+pop bx
+int 7
+mov al,1
+add ch,'0'
+mov cl,byte ptr[bx]
+mov byte ptr[bx],ch
+int 7
+mov byte ptr[bx],cl
+pop ax
+pop cx
+ret
+
+es_vocal:
+cmp bl,'a'
+jz es
+cmp bl,'A'
+jz es
+cmp bl,'e'
+jz es
+cmp bl,'E'
+jz es
+cmp bl,'i'
+jz es
+cmp bl,'I'
+jz es
+cmp bl,'o'
+jz es
+cmp bl,'O'
+jz es
+cmp bl,'u'
+jz es
+cmp bl,'U'
+jz es
+mov bl,00h
+jmp fin
+es:
+mov bl,0ffh
+fin:
+ret
+
+org 2000h
+mov bx, offset inicio
+mov ah,'.'
+call leer_str_char
+hlt
+end

@@ -1,0 +1,214 @@
+8.a)
+org 1000h
+cadena db "Hola mundo"
+finc db 00h
+org 3000h
+longitud:
+push ax
+mov ax,0
+loop:
+cmp byte ptr[bx],00h
+jz fin
+inc ax
+inc bx
+jmp loop
+fin:
+mov bx,ax
+pop ax
+ret
+org 2000h
+mov bx,offset cadena
+call longitud
+hlt
+end
+-----------------------------------------------------
+     org 1000h
+   string db "aetdg"
+   final db 0
+   contador db 0
+
+    
+       org 3000h
+     contar:
+      mov cx,0
+      seguir:
+      inc ch
+      inc bx
+      cmp bx,dx
+      jnz seguir
+     ret
+
+    
+        org 2000h
+        mov bx, offset string
+        mov dx,offset final
+        call contar
+        mov contador,ch
+        hlt
+        end
+8.b)
+org 1000h
+cadena db "HoLa muNDo"
+finc db 00h
+org 3000h
+cant_min:
+push ax
+mov ax,0
+loop:
+cmp byte ptr[bx],00h
+jz fin
+cmp byte ptr[bx],'a'
+js salto
+cmp byte ptr[bx],'z'
+jns salto
+inc ax
+salto:
+inc bx
+jmp loop
+fin:
+mov bx,ax
+pop ax
+ret
+org 2000h
+mov bx,offset cadena
+call cant_min
+hlt
+end
+--------------------------------------------------------
+  org 1000h
+   string db "aeMdg"
+   final db 0
+   contador db 0
+   letra db "a"
+   letra2 db "z"
+
+    
+       org 3000h
+     contar_min:
+      mov cx,0
+      seguir:
+      cmp [bx],ah
+      js prox
+      cmp [bx],al
+      jns prox
+      inc ch
+      prox:inc bx
+      cmp byte ptr[bx],00h
+      jnz seguir
+     ret
+
+    
+        org 2000h
+        mov bx, offset string
+        mov ah,letra
+        mov al,letra2
+        
+        call contar_min
+        mov contador,ch
+        hlt
+        end
+
+8.c)
+org 1000h
+n dw 'b'
+org 3000h
+es_vocal:
+cmp bx,'a'
+jz es
+cmp bx,'A'
+jz es
+cmp bx,'e'
+jz es
+cmp bx,'E'
+jz es
+cmp bx,'i'
+jz es
+cmp bx,'I'
+jz es
+cmp bx,'o'
+jz es
+cmp bx,'O'
+jz es
+cmp bx,'u'
+jz es
+cmp bx,'U'
+jz es
+mov bx,00h
+jmp fin
+es:
+mov bx,0ffh
+fin:
+ret
+
+org 2000h
+mov bx,n
+call es_vocal
+hlt
+end
+
+8.d)
+org 1000h
+n db "HO0932LAmunO0"
+f db 00h
+org 3000h
+es_vocal:
+cmp bl,'a'
+jz es
+cmp bl,'A'
+jz es
+cmp bl,'e'
+jz es
+cmp bl,'E'
+jz es
+cmp bl,'i'
+jz es
+cmp bl,'I'
+jz es
+cmp bl,'o'
+jz es
+cmp bl,'O'
+jz es
+cmp bl,'u'
+jz es
+cmp bl,'U'
+jz es
+mov bl,00h
+jmp fin
+es:
+mov bl,0ffh
+fin:
+ret
+
+contar_voc:
+push ax
+mov ax,0
+loop:
+push bx
+mov bl,[bx]
+cmp bl,00h
+jz fin2
+call es_vocal
+cmp bl,0ffh
+jnz seguir
+inc ax
+seguir:
+pop bx
+inc bx
+jmp loop
+jmp fin3
+fin2:
+pop bx
+fin3:
+mov bx,ax
+pop ax
+ret
+
+org 2000h
+mov bx,offset n
+call contar_voc
+hlt
+end
+
+
+
+

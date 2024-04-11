@@ -1,0 +1,109 @@
+4.a)
+org 1000h
+elef db "X elefantes se balanceaban..."
+fin_ db ?
+
+org 3000h
+
+SALTO_DE_LINEA:
+push ax
+push bx
+push cx
+mov cl, byte ptr[bx]
+mov byte ptr [bx],10
+mov ch,al
+mov al,1
+int 7
+mov byte ptr [bx],cl
+mov al,ch
+pop cx
+pop bx
+pop ax
+ret
+
+ELEFANTES:
+push bx
+push ax
+push cx
+mov cl,'0'
+mov bx,offset elef
+add al,cl
+mov byte ptr [bx],al
+mov al,offset fin_ - offset elef
+int 7
+call SALTO_DE_LINEA
+pop cx
+pop ax
+pop bx
+ret
+
+org 2000h
+mov al,0
+loop:
+call ELEFANTES
+inc al
+cmp al,10
+js loop
+hlt
+end
+
+4.b)
+org 1000h
+elef db "XY elefantes se balanceaban..."
+fin_ db ?
+
+org 3000h
+
+SALTO_DE_LINEA:
+push ax
+push bx
+push cx
+mov cl, byte ptr[bx]
+mov byte ptr [bx],10
+mov ch,al
+mov al,1
+int 7
+mov byte ptr [bx],cl
+mov al,ch
+pop cx
+pop bx
+pop ax
+ret
+
+ELEFANTES:
+push bx
+push ax
+push cx
+mov cl,'0'
+mov bx,offset elef
+add al,cl
+add ah,cl
+mov byte ptr [bx],ah
+inc bx
+mov byte ptr [bx],al
+dec bx
+mov al,offset fin_ - offset elef
+int 7
+call SALTO_DE_LINEA
+pop cx
+pop ax
+pop bx
+ret
+
+org 2000h
+mov al,0
+mov ah,0
+loop:
+call ELEFANTES
+inc al
+cmp al,10
+jnz sigo
+mov al,0
+inc ah
+sigo:
+cmp ah,9
+jnz loop
+cmp al,9
+jnz loop
+hlt
+end

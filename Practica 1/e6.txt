@@ -1,0 +1,129 @@
+6.a)
+ORG 1000H
+n1 db 2
+n2 db 3
+resul db 0
+ORG 2000H
+mov al,n1
+mov ah,n2
+mov cl,resul
+mov bx,offset resul
+lazo:
+add cl,al
+dec ah
+jnz lazo
+mov [bx],cl
+hlt
+end
+
+6.b)
+ORG 1000H
+n1 db 2
+n2 db 3
+resul db 0
+
+ORG 3000H
+MUL:
+push ax
+mov cl,0
+LOOP:
+add cl,al
+dec ah
+jnz LOOP
+pop ax
+ret
+
+ORG 2000H
+mov al,n1
+mov ah,n2
+call MUL
+hlt
+end
+
+6.c)
+ORG 1000H
+n1 db 2
+n2 db 3
+resul db 0
+
+ORG 3000H
+MUL:
+mov cx,0
+LOOP:
+add cl,[bx]
+push bx
+mov bx,ax
+dec byte ptr[bx]
+pop bx
+jnz LOOP
+ret
+
+ORG 2000H
+mov ax,offset n1
+mov bx,offset n2
+call MUl
+hlt
+end
+
+6.d)
+ORG 1000H
+n1 db 2
+n2 db 3
+resul db 0
+
+ORG 3000H
+MUL:
+push ax
+push bx
+mov bx,sp
+add bx,2
+mov bx,[bx]
+mov ch,0
+loop:
+add ch,bl
+dec bh
+jnz loop
+pop bx
+pop ax
+ret
+
+ORG 2000H
+mov al,n1
+mov ah,n2
+call MUl
+hlt
+end
+
+6.e)
+ORG 1000H
+n1 db 2
+n2 db 3
+resul db 0
+
+ORG 3000H
+MUL:
+push ax
+push bx
+mov bx,sp
+mov cx,[bx]
+add bx,2
+mov bx,[bx]
+mov ax,0
+loop:
+add al,byte ptr[bx]
+push bx
+mov bx,cx
+dec byte ptr[bx]
+pop bx
+jnz loop
+mov cx,ax
+pop bx
+pop ax
+ret
+
+ORG 2000H
+mov ax,offset n1
+mov bx,offset n2
+call MUl
+hlt
+end

@@ -1,0 +1,105 @@
+3.a)
+org 1000h
+n dw 1
+org 2000h
+mov bx,offset n
+mov al,1
+loop:
+cmp byte ptr[bx],0FFh
+jz fin
+int 7
+inc word ptr[bx]
+jmp loop
+fin:
+hlt
+end
+
+3.b)
+org 1000h
+letras db ?
+org 2000h
+mov cl,'Z'
+sub cl,'A';calculo cant char
+mov al,1
+mov bx,offset letras
+mov byte ptr[bx],'A'
+loop:
+cmp cl,0
+js fin
+int 7
+inc byte ptr[bx]
+dec cl
+jmp loop
+fin:
+hlt
+end
+
+3.c)
+org 1000h
+letras db ?
+org 2000h
+mov cl,'9'
+sub cl,'0';calculo cant char
+mov al,1
+mov bx,offset letras
+mov byte ptr[bx],'0'
+loop:
+cmp cl,0
+js fin
+int 7
+inc byte ptr[bx]
+dec cl
+jmp loop
+fin:
+hlt
+end
+
+3.d)
+org 1000h
+letras db ?
+org 2000h
+mov cl,'9'
+sub cl,'0';calculo cant char
+mov al,1
+mov bx,offset letras
+mov byte ptr[bx],'0'
+loop:
+cmp cl,0
+js fin
+int 7
+mov ch,byte ptr [bx]
+mov byte ptr[bx],10
+int 7
+mov [bx],ch
+inc byte ptr[bx]
+dec cl
+jmp loop
+fin:
+hlt
+end
+
+3.e)
+org 1000h
+letras db ?
+org 2000h
+mov cl,'Z'
+sub cl,'A';calculo cant char
+mov ch,'A'
+sub ch,'a'
+mov al,1
+mov bx,offset letras
+mov byte ptr[bx],'A'
+loop:
+cmp cl,0
+js fin
+int 7
+mov dl, byte ptr[bx]
+sub byte ptr[bx],ch
+int 7
+mov byte ptr[bx],dl
+inc byte ptr[bx]
+dec cl
+jmp loop
+fin:
+hlt
+end
