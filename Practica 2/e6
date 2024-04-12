@@ -1,0 +1,67 @@
+ORG 1000H
+VECTOR db ?
+ORG 1100H
+PRINT1 db "Ingresar un dígito del 0 al 9"
+PRINT2 db "Carácter inválido: solo dígitos del 0 al 9"
+DIGITO db ?
+ORG 3000H
+
+salto_de_linea:
+push ax
+push bx
+push cx
+mov cl, byte ptr[bx]
+mov byte ptr [bx],10
+mov ch,al
+mov al,1
+int 7
+mov byte ptr [bx],cl
+mov al,ch
+pop cx
+pop bx
+pop ax
+ret
+
+es_digito:;devuelve en al 1 o 0
+cmp al,'0'
+js me_voy
+cmp al,'9'+1
+jns me_voy
+mov al,1
+jmp fin_1
+me_voy:
+mov al,0
+fin_1: ret
+
+leer_digito:
+mov bx,offset PRINT1
+mov al,offset PRINT2 - offset PRINT1
+int 7
+mov bx,offset DIGITO
+volver:
+call salto_de_linea
+mov al,1
+int 6
+mov al,[bx]
+call es_digito
+cmp al,0
+jnz valido
+push ax
+push bx
+mov bx,offset PRINT2
+mov al,offset DIGITO - offset PRINT2
+int 7
+pop bx
+pop ax
+jmp volver
+valido:
+mov al,[bx]
+ret
+
+leer_vector:
+
+;vuelve en al el digito
+org 2000H
+call leer_digito
+hlt
+end
